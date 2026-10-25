@@ -1,7 +1,7 @@
 # CI/CD de Tiza.com (DEPLOY-PLAN.md, opción B).
 # - ci: tipos y pruebas unitarias en cada PR y en cada push a main.
 # - desplegar: solo con disparo MANUAL (Actions > CI/CD > Run workflow) desde main, y solo si ci pasó.
-#   Usa el entorno "produccion" de GitHub: configúralo con revisores obligatorios para exigir aprobación.
+#   Usa el entorno "produccion" de GitHub, hoy sin revisores (el plan de la cuenta no los admite en repos privados).
 # Las migraciones de la base NO se ejecutan aquí: se aplican a mano antes de desplegar (npm run db:migrate).
 name: CI/CD
 
@@ -34,7 +34,7 @@ jobs:
       - name: Pruebas unitarias
         run: npm test
       # Sin build aquí: la landing lee los precios de la base al compilar y CI no tiene DATABASE_URL.
-      # El build se valida en "desplegar" (vercel build), que trae las variables con vercel pull.
+      # El build lo hace Vercel al desplegar, con las variables de producción.
 
   desplegar:
     needs: ci
@@ -65,12 +65,10 @@ jobs:
       - run: npm ci
       - name: Instalar la CLI de Vercel
         run: npm install --global vercel@65.2.0
-      - name: Traer la configuración de producción
-        run: vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
-      - name: Build
-        run: vercel build --prod --token="$VERCEL_TOKEN"
+      # El build lo hace Vercel (no el runner): vercel pull no descarga las variables Secret, como DATABASE_URL,
+      # y la landing necesita la base al compilar. Por eso no se usa --prebuilt.
       - name: Desplegar
-        run: vercel deploy --prebuilt --prod --meta gitCommit="${GITHUB_SHA::7}" --token="$VERCEL_TOKEN"
+        run: vercel deploy --prod --meta gitCommit="${GITHUB_SHA::7}" --token="$VERCEL_TOKEN"
       - name: Verificar /api/salud
         run: |
           for intento in 1 2 3 4 5 6; do
