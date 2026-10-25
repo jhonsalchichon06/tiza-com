@@ -1,0 +1,52 @@
+## 1. Esquema y migración (solo rama `pruebas`)
+
+- [x] 1.1 Con una consulta de solo lectura sobre la rama `pruebas` (`DATABASE_URL_PRUEBAS`), comprobar que no hay dos reservas con `primera_gratis` vivas del mismo cliente u hogar (hoy `reservas` debe estar vacía); no tocar producción
+- [x] 1.2 Agregar a `src/db/esquema.ts`, en `reservas`, los índices `uniqueIndex("reservas_primera_gratis_por_cliente").on(usuarioId)` y `uniqueIndex("reservas_primera_gratis_por_hogar").on(distrito, direccionNormalizada, departamentoNormalizado)`, ambos con `where primera_gratis AND estado IN ('pendiente','confirmada','completada')`; actualizar el comentario de la sección de agenda
+- [x] 1.3 Generar la migración con `npm run db:generate -- --name=una-gratis-por-cliente-y-hogar` y revisar que el SQL solo cree los dos índices (sin `DROP`, sin tocar `0003`, el `EXCLUDE` ni columnas)
+- [x] 1.4 Crear `src/db/migracion-gratis-por-hogar.test.ts` (lee el SQL de `0005` como `migracion-membresias-pagos.test.ts`): los dos `CREATE UNIQUE INDEX`, sus columnas, el `WHERE` con `primera_gratis` y los tres estados, y que no hay `DROP` ni `ALTER TABLE`; confirmar que las pruebas de migraciones anteriores siguen en verde
+- [x] 1.5 Aplicar `0005` **solo a la rama `pruebas`** con `node -e "require('dotenv').config({path:'.env.local',quiet:true});process.env.DATABASE_URL=process.env.DATABASE_URL_PRUEBAS;require('child_process').execSync('npx drizzle-kit migrate',{stdio:'inherit'})"` (no imprime la cadena); comprobar con consultas de solo lectura que existen los dos índices y que `reservas_sin_solape_por_equipo` sigue ahí; anotar el resultado en `design.md`
+
+## 2. Soporte de pruebas y reglas de datos
+
+- [x] 2.1 Ampliar `filaReserva` de `src/db/pruebas-bd.ts` con `primeraGratis`, `distrito`, `calle`, `numero`, `direccionNormalizada` y `departamentoNormalizado` opcionales, sin cambiar los valores por defecto; `npx tsc --noEmit` y las pruebas de #6 y #9a siguen compilando
+- [x] 2.2 Crear `src/db/gratis-por-hogar.bd.test.ts` (prefijo `prueba-agenda-`, equipos inactivos, `afterAll` con `limpiar` y `contarRastros() === 0`) con `intentarInsertar`: segunda gratis viva del mismo cliente → `23505` por cliente; misma clave de hogar de otro cliente → `23505` por hogar; con `cancelada` o `expirada` se acepta otra; con `completada` y `confirmada` se rechaza; reservas con `primera_gratis` falso en el mismo hogar no estorban; mismo edificio con departamento `dpto 302` y `dpto 401` se aceptan; departamento vacío frente a `dpto 302` se acepta; mismo hogar en otro distrito se acepta
+- [x] 2.3 Correr `PRUEBAS_BD=1 npx vitest run --config vitest.bd.config.ts` con `DATABASE_URL_PRUEBAS` y confirmar que pasan las pruebas nuevas y las de #6 y #9a
+
+## 3. Regla de la limpieza gratis
+
+- [x] 3.1 Agregar a `src/db/reservas-activas.ts` `reservaQueCuentaParaGratis` (`reservaActiva` o `completada`), con su comentario, y su prueba (SQL generado con `PgDialect`): incluye `confirmada`, `completada` y `pendiente` con `expira_en > now()`, y excluye `cancelada` y `expirada`
+- [x] 3.2 Cambiar `decidirLimpiezaGratis(tx, usuarioId, hogar: ClaveHogar)` en `src/lib/reservas/gratis.ts` (parámetro obligatorio): falso si el cliente tiene una reserva que cuenta o si el hogar tiene una con `primera_gratis` que cuenta; exponer `decidirPorCliente` y `decidirPorHogar` para la cotización; actualizar `gratis.test.ts` con dobles: cliente nuevo y hogar nuevo → verdadero; reserva del cliente en cada estado vivo o realizado → falso; hogar con gratis `pendiente`, `confirmada` o `completada` → falso; solo `cancelada` o `expirada` en el hogar o el cliente → verdadero; hogar solo con reservas pagadas → verdadero; la consulta del hogar filtra por distrito, dirección normalizada y departamento normalizado (parámetros exactos) y no por las referencias; una prueba con `// @ts-expect-error` fija que el hogar es obligatorio
+- [x] 3.3 Prueba `src/lib/agenda/unico-insert.test.ts`: recorre `src/` (sin `*.test.ts`, `pruebas-bd.ts` ni `*.bd.test.ts`) y falla si hay `insert(reservas)` fuera de `src/lib/agenda/asignar.ts`
+- [x] 3.4 En `src/lib/reservas/unicidad.ts` traducir `reservas_primera_gratis_por_hogar` y `reservas_primera_gratis_por_cliente` a `ErrorApi(409, "limpieza_gratis_usada", ...)` con los mensajes de la decisión 4 de `design.md` (exportar las constantes); ampliar `unicidad.test.ts`: cada índice con `cause.code` `23505`, otro `23505` y otro código pasan sin traducir, y los índices anteriores siguen igual
+- [x] 3.5 En `crear.ts` pasar `claveHogar(direccion)` a `decidirLimpiezaGratis`; ampliar `crear.test.ts` con dobles: hogar ya usado → reserva con `primera_gratis` falso, `horas_gratis_aplicadas` 0, monto de la estándar 2/1 igual a 11610, pago `membresia_y_reserva` por 38310; estándar 1/1 de 3 h con hogar usado → monto 9900 × 0,9 = 8910 y concepto `membresia_y_reserva`; hogar nuevo conserva el comportamiento actual (profunda 2/1 → 6966); el `23505` por hogar durante la inserción sale como `409` `limpieza_gratis_usada` y la transacción se deshace
+
+## 4. Cotización con el hogar
+
+- [x] 4.1 Extender `cotizarPrimeraReserva(config, servicio, ahora, { aplicaGratis })` en `cotizar.ts` (sin cuarto argumento se comporta como hoy) y agregar `motivo_sin_gratis` (`null`, `"cliente"` o `"hogar"`) a `Cotizacion`; ampliar `cotizar.test.ts`: con `aplicaGratis` falso la profunda 2/1 da 0 horas gratis, monto 17415 y total 44115; el motivo se propaga
+- [x] 4.2 En `rutas.ts` (`crearRutaCotizacion`) aceptar `distrito`, `calle`, `numero` y `departamento`: sin ninguno, decide solo por el cliente; con alguno de los tres primeros, `validarDireccion` (`422`) y `decidirLimpiezaGratis` con la clave del hogar; la lectura va bajo `conReintento` con `errorOriginal`, con una dependencia inyectable `decidir`; la ruta sigue sin escribir. Pruebas con dobles: hogar usado → `aplica_gratis` falso, motivo `"hogar"` y total 44115 para la profunda 2/1; cliente con reserva → motivo `"cliente"`; hogar nuevo → total 33666; sin dirección → forma anterior; distrito "La Molina" y número sin dígitos → `422` y `decidir` no se llama; `401` sin sesión; cabecera `private, no-store`; un corte de conexión seguido de éxito responde `200`
+- [x] 4.3 Prueba contra Neon (en `gratis-por-hogar.bd.test.ts`): la cotización con la dirección de un hogar con gratis `pendiente` vigente da `"hogar"`; con la gratis `cancelada`, `expirada` o `pendiente` vencida sin marcar da `aplica_gratis` verdadero; después de la consulta la vencida sigue `pendiente` (no escribe)
+- [x] 4.4 Comprobar que `app/api/cotizacion/route.ts` sigue exportando solo `GET` y que ningún archivo del cliente recalcula el precio
+
+## 5. Pruebas de punta a punta contra Neon (rama `pruebas`)
+
+- [x] 5.1 Preparar en `gratis-por-hogar.bd.test.ts` el uso de `crearPrimeraReserva` como en `crear-reserva.bd.test.ts` (configuración `VALORES_DEL_DISENO`, `verificarImagen` doble, `equipoIds` de prueba, un día distinto por prueba, `AHORA` fijo)
+- [x] 5.2 Segunda cuenta: la primera cuenta recibe gratis; otra cuenta con la misma dirección escrita distinto ("Av. Larco" / "Avenida Larco", "Dpto 302" / "dpto. 302") queda con `primera_gratis` falso, monto sin horas gratis y pago `membresia_y_reserva`; dos departamentos distintos del mismo edificio reciben gratis cada uno; el mismo edificio con otro departamento recibe; un cliente con reserva `confirmada` en un hogar no recibe en otro; un hogar solo con reservas pagadas sí recibe
+- [x] 5.3 Concurrencia: dos cuentas distintas, mismo hogar, días distintos y en paralelo → exactamente una reserva con `primera_gratis` verdadero y la otra petición responde `409` `limpieza_gratis_usada` sin dejar membresía, pago ni reserva; diez cuentas por el mismo hogar → exactamente una; la petición ganadora que se deshace deja pasar a la perdedora con gratis. Anotar en `design.md` qué índice informó Postgres si se mezcla con la falta de cupo
+- [x] 5.4 Hallazgo del 9a: una reserva gratis `pendiente` vencida de otra cuenta en el mismo hogar no impide que una cuenta nueva reciba gratis y queda `expirada`; una escritura que marca la vencida y falla con `409` (cliente con membresía `pendiente`) deja la vencida `pendiente`, y la escritura siguiente de otra cuenta en el hogar la marca `expirada` y concede las horas gratis
+- [x] 5.5 Reuso tras cancelar: cancelar (por UPDATE de prueba) o expirar la reserva gratis del hogar permite que otra cuenta la reciba; cancelar la del cliente permite su siguiente reserva gratis (el flujo de cancelar es del #12)
+- [x] 5.6 Comprobar con `contarRastros()` que no queda ninguna fila de prueba; si queda, limpiar por prefijo
+
+## 6. Verificación local (sin Playwright)
+
+- [x] 6.1 Correr `npm test`, `npx tsc --noEmit` y `npm run build` sin errores y confirmar que `npm test` no abre ninguna conexión a Neon
+- [x] 6.2 Repasar que ningún monto, hora gratis ni secreto quedó escrito en el código y que no se agregaron variables de entorno
+- [x] 6.3 Repasar contra las dos specs y la tabla de cobertura de `design.md`: cada criterio de `TECH-DESIGN.md` de este ítem tiene su escenario y su prueba; los de #11, #12 y #14 quedan anotados como de esos ítems
+- [x] 6.4 Proponer al usuario (sin editar `BACKLOG.md`, `PRD.md`, los ADR ni el change `asistente-de-reserva`): que 9b vuelva a cotizar con la dirección y muestre `motivo_sin_gratis`; marcar como resueltos los pendientes "Ítems 9 y 10 con la dirección" y "#10: agrega los índices"; que #12 y #13 pasen `claveHogar` a `decidirLimpiezaGratis`
+
+## 7. Producción y despliegue (DIFERIDO hasta cerrar los 18 ítems)
+
+Por decisión del usuario no se migra ni se despliega producción hasta terminar el backlog. Estas tareas no se ejecutan al aplicar este change.
+
+- [ ] 7.1 **Diferida.** Con una consulta de solo lectura, comprobar que en producción no hay dos reservas gratis vivas del mismo cliente u hogar y aplicar `npm run db:migrate` **antes de desplegar** (apunta a producción); comprobar con consultas de solo lectura que existen los dos índices
+- [ ] 7.2 **Diferida.** Desplegar con `npx vercel deploy --prod` y comprobar `GET /api/salud` = `200 {"estado":"ok"}`
+- [ ] 7.3 **Diferida.** Prueba de humo con `curl` y una cuenta `@tiza.test`: `GET /api/cotizacion` con y sin dirección responde `200` con la forma esperada; borrar la cuenta y cualquier dato de prueba al terminar y confirmar con una consulta de solo lectura que no quedan reservas, pagos ni membresías de prueba

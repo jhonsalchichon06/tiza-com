@@ -1,0 +1,416 @@
+/* Estilos del asistente de reserva, tomados de demo/reservar.html y demo/styles.css.
+   Solo clases (CSS Module): nada de reglas globales, para no cambiar /ingresar, /registro, /cuenta ni la landing.
+   Textos grandes y controles amplios: el público es de 30 a 70 años. */
+
+.raiz {
+  --ink: #0f2a2e;
+  --muted: #5b6f72;
+  --bg: #fbfaf6;
+  --alt: #f1efe7;
+  --brand: #0b6e6e;
+  --brand-d: #084f50;
+  --chalk: #ffd23f;
+  --line: #e3e0d4;
+  --r: 18px;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 1.125rem;
+  line-height: 1.55;
+  box-sizing: border-box;
+}
+.raiz *,
+.raiz *::before,
+.raiz *::after {
+  box-sizing: border-box;
+}
+
+.barra {
+  border-bottom: 1px solid var(--line);
+  background: rgba(251, 250, 246, 0.95);
+}
+.barraInterior {
+  width: min(44rem, 100% - 2rem);
+  margin-inline: auto;
+  height: 4rem;
+  display: flex;
+  align-items: center;
+}
+.logo {
+  font-family: Fraunces, Georgia, serif;
+  font-weight: 700;
+  font-size: 1.6rem;
+  color: var(--ink);
+  text-decoration: none;
+}
+.logoPunto {
+  color: var(--brand);
+}
+
+.contenido {
+  width: min(44rem, 100% - 2rem);
+  margin: 0 auto;
+  padding: 1.5rem 0 4rem;
+}
+
+.titulo {
+  font-family: Fraunces, Georgia, serif;
+  font-size: 2rem;
+  line-height: 1.15;
+  margin: 0 0 0.5rem;
+}
+.titulo:focus {
+  outline: none;
+}
+.subtitulo {
+  color: var(--muted);
+  margin: 0 0 1.5rem;
+}
+
+/* ----- progreso ----- */
+.progreso {
+  margin: 0 0 1.5rem;
+}
+.progresoTexto {
+  font-weight: 700;
+  margin: 0 0 0.4rem;
+}
+.progresoRiel {
+  height: 0.5rem;
+  background: var(--alt);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.progresoRelleno {
+  display: block;
+  height: 100%;
+  background: var(--brand);
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+/* ----- opciones (radios con aspecto de tarjeta) ----- */
+.grupo {
+  border: 0;
+  padding: 0;
+  margin: 0 0 1.25rem;
+  min-width: 0;
+}
+.grupoTitulo {
+  font-weight: 700;
+  padding: 0;
+  margin-bottom: 0.6rem;
+}
+.opciones {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 0.85rem;
+}
+.opcion {
+  position: relative;
+  display: grid;
+  gap: 0.15rem;
+  border: 2px solid var(--line);
+  background: #fff;
+  border-radius: 16px;
+  padding: 1rem 1.1rem;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.opcion:hover {
+  border-color: var(--brand);
+}
+.opcion input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  cursor: pointer;
+}
+.opcion:has(input:checked) {
+  border-color: var(--brand);
+  background: #f3fbf8;
+  box-shadow: 0 0 0 3px rgba(11, 110, 110, 0.15);
+}
+.opcion:has(input:focus-visible) {
+  outline: 3px solid var(--brand);
+  outline-offset: 2px;
+}
+.opcionNombre {
+  font-weight: 700;
+}
+.opcionDetalle {
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+/* ----- campos ----- */
+.campo {
+  display: grid;
+  gap: 0.35rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  max-width: 16rem;
+}
+.campo input {
+  font: inherit;
+  font-weight: 400;
+  padding: 0.75rem 0.9rem;
+  border: 2px solid #cfd8d5;
+  border-radius: 0.6rem;
+  background: #fff;
+}
+.campo input:focus {
+  outline: none;
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px rgba(11, 110, 110, 0.2);
+}
+.ayuda {
+  color: var(--muted);
+  font-size: 1rem;
+  margin: 0 0 1rem;
+}
+
+/* ----- resumen ----- */
+.resumen {
+  display: grid;
+  gap: 0.5rem;
+  margin: 1.25rem 0;
+  border: 1.5px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+  padding: 1rem 1.25rem;
+}
+.resumenFila {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.resumenFila dt {
+  color: var(--muted);
+}
+.resumenFila dd {
+  margin: 0;
+  font-weight: 700;
+  text-align: right;
+}
+.resumenTotal {
+  border-top: 1.5px solid var(--line);
+  padding-top: 0.6rem;
+  font-size: 1.2rem;
+}
+.resumenTotal dt {
+  color: var(--ink);
+  font-weight: 700;
+}
+.nota {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  background: #fff8dc;
+  border: 1.5px solid var(--chalk);
+}
+
+/* ----- fecha y hora ----- */
+.mes {
+  font-weight: 700;
+  text-transform: capitalize;
+  margin: 1rem 0 0.5rem;
+}
+.dias {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(4.6rem, 1fr));
+  gap: 0.5rem;
+}
+.dia,
+.hora {
+  font: inherit;
+  cursor: pointer;
+  border: 2px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+  border-radius: 12px;
+  padding: 0.55rem 0.3rem;
+  text-align: center;
+  line-height: 1.25;
+  transition: border-color 0.15s;
+}
+.dia:hover,
+.hora:hover:not(:disabled) {
+  border-color: var(--brand);
+}
+.dia[aria-pressed="true"],
+.hora[aria-pressed="true"] {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: #fff;
+}
+.diaSemana {
+  display: block;
+  font-size: 0.85rem;
+  text-transform: capitalize;
+}
+.diaNumero {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+.horas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(5.5rem, 1fr));
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+.horaNoDisponible,
+.horaNoDisponible:hover {
+  background: var(--alt);
+  border-color: var(--alt);
+  color: #8a9694;
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+
+/* ----- pago ----- */
+.datosPago {
+  margin: 1rem 0;
+  border: 1.5px dashed var(--line);
+  border-radius: 14px;
+  padding: 1rem 1.25rem;
+  display: grid;
+  gap: 0.75rem;
+  background: #fff;
+}
+.aviso {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  background: #fff4c2;
+  border: 2px solid #c79a00;
+  color: #3d2f00;
+  font-weight: 700;
+  font-size: 1.125rem;
+}
+.qr {
+  display: block;
+  width: min(15rem, 100%);
+  height: auto;
+  margin-inline: auto;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+}
+.cci {
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  word-break: break-all;
+}
+.titular {
+  margin: 0;
+  color: var(--muted);
+}
+.archivo {
+  display: grid;
+  gap: 0.4rem;
+  font-weight: 600;
+  margin: 1.25rem 0 0.5rem;
+}
+.archivo input {
+  font: inherit;
+  font-weight: 400;
+  padding: 0.6rem;
+  border: 2px dashed #cfd8d5;
+  border-radius: 0.6rem;
+  background: #fff;
+  max-width: 100%;
+}
+.exito {
+  margin: 0.25rem 0 0;
+  font-weight: 700;
+  color: var(--brand-d);
+}
+.error {
+  margin: 0.75rem 0;
+  padding: 0.75rem 0.9rem;
+  border-radius: 0.6rem;
+  background: #fdecea;
+  color: #8a1c13;
+  font-weight: 600;
+}
+.aviso409 {
+  margin: 0 0 1rem;
+  padding: 0.75rem 0.9rem;
+  border-radius: 0.6rem;
+  background: #fff4c2;
+  border: 1.5px solid #c79a00;
+  font-weight: 600;
+}
+
+/* ----- botones ----- */
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+.boton {
+  display: inline-block;
+  font: inherit;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  border: 2px solid var(--brand);
+  background: var(--brand);
+  color: #fff;
+  border-radius: 999px;
+  padding: 0.85rem 1.8rem;
+  min-height: 3.25rem;
+  transition: background 0.15s;
+}
+.boton:hover:not(:disabled) {
+  background: var(--brand-d);
+  border-color: var(--brand-d);
+}
+.boton:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.botonSecundario {
+  background: transparent;
+  color: var(--brand);
+}
+.botonSecundario:hover:not(:disabled) {
+  background: var(--brand);
+  color: #fff;
+}
+.botonWhatsapp {
+  background: #1a7f4b;
+  border-color: #1a7f4b;
+}
+.botonWhatsapp:hover:not(:disabled) {
+  background: #135f38;
+  border-color: #135f38;
+}
+.boton:focus-visible,
+.dia:focus-visible,
+.hora:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.mensajeCentrado {
+  text-align: left;
+}
+.enlace {
+  color: var(--brand);
+  font-weight: 700;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .raiz *,
+  .raiz *::before,
+  .raiz *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}

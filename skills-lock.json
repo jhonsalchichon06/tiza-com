@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "skills": {
+    "caveman": {
+      "source": "juliusbrussee/caveman",
+      "sourceType": "github",
+      "skillPath": "skills/caveman/SKILL.md",
+      "computedHash": "71b600c88c8d1d36f18c4875db23b53c5d6cb9ba3195e19451d6b1bb67db07c4"
+    },
+    "deploy-pass": {
+      "source": "adminoryslabs/Armory",
+      "sourceType": "github",
+      "skillPath": "skills/deploy-pass/SKILL.md",
+      "computedHash": "add0137d1686ed3ec8c5ded67b49da7a35bdb8fdb073bc5d92844027a56f8383"
+    },
+    "generar-backlog": {
+      "source": "adminoryslabs/Armory",
+      "sourceType": "github",
+      "skillPath": "skills/generar-backlog/SKILL.md",
+      "computedHash": "d224928e49ef42e394d1d8ef1e87bc62d785dab38386ec0a62c90b1b98b141b5"
+    },
+    "generar-prd-conversacional": {
+      "source": "adminoryslabs/Armory",
+      "sourceType": "github",
+      "skillPath": "skills/generar-prd-conversacional/SKILL.md",
+      "computedHash": "ad3c132da28051340b920a981a72d8eb9c9b54203454dc0011320ef0f2830aae"
+    },
+    "generar-tech-design": {
+      "source": "adminoryslabs/Armory",
+      "sourceType": "github",
+      "skillPath": "skills/generar-tech-design/SKILL.md",
+      "computedHash": "77dae8eb9f76d2297ec120ef2d53b445186865c791d33b33ab342af1a6a8d68c"
+    },
+    "mermaid-diagrams": {
+      "source": "softaworks/agent-toolkit",
+      "sourceType": "github",
+      "skillPath": "skills/mermaid-diagrams/SKILL.md",
+      "computedHash": "b6c206a3cab0333a1d3d3cf27114099d0d5f25eb07d86c8f12472b7aa7d59a4c"
+    },
+    "neon": {
+      "source": "neondatabase/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/neon/SKILL.md",
+      "computedHash": "be346e41230da99ec27555ea8eb781a398568a5c8d70bdc1e5d82d3f2547f2f0"
+    },
+    "neon-postgres": {
+      "source": "neondatabase/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/neon-postgres/SKILL.md",
+      "computedHash": "31be95961c771eec138b41489ef0c77e3a99c221aca0618af87cbbc59d8cdc8e"
+    },
+    "playwright-e2e-test": {
+      "source": "adminoryslabs/Armory",
+      "sourceType": "github",
+      "skillPath": "skills/playwright-e2e-test/SKILL.md",
+      "computedHash": "fc51fbb72e33ce2aa2880bcfd50360eb350c3f6e2539e94bfa8a521a680f3230"
+    },
+    "revision-adversarial": {
+      "source": "adminoryslabs/Armory",
+      "sourceType": "github",
+      "skillPath": "skills/revision-adversarial/SKILL.md",
+      "computedHash": "665292baf3d60cab35610557052d21b2aebedd483cd5f82dad4924e2a988cb07"
+    },
+    "security-pass": {
+      "source": "adminoryslabs/Armory",
+      "sourceType": "github",
+      "skillPath": "skills/security-pass/SKILL.md",
+      "computedHash": "f2443bf5b3505b8bb1ef023127541b815b94541c747b8fd552ba2101de2a3eb5"
+    }
+  }
+}

@@ -1,0 +1,68 @@
+/* Estilos del crédito en horas en el portal del administrador (ítem 14). Solo clases (CSS Module). Solo lectura. */
+
+.pagina {
+  max-width: 64rem;
+  margin: 2.5rem auto;
+  padding: 0 1rem;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  color: #0f2a2e;
+}
+.titulo {
+  font-size: 1.75rem;
+  margin: 0 0 0.5rem;
+}
+.ayuda {
+  color: #5b6f72;
+  margin: 0 0 1.5rem;
+}
+.volver {
+  display: inline-block;
+  margin-bottom: 1rem;
+  color: #0b6e6e;
+}
+.vacio {
+  color: #5b6f72;
+  padding: 1rem 0;
+}
+.lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+.tarjeta {
+  border: 1px solid #e3e0d4;
+  border-radius: 0.75rem;
+  background: #fff;
+  padding: 0.875rem 1rem;
+  display: grid;
+  gap: 0.25rem;
+}
+.cliente {
+  font-weight: 600;
+}
+.detalle {
+  color: #5b6f72;
+}
+.etiqueta {
+  display: inline-block;
+  padding: 0.125rem 0.625rem;
+  border-radius: 999px;
+  background: #e6f3f3;
+  color: #084f50;
+  font-size: 0.9375rem;
+}
+.vencido {
+  background: #f1efe7;
+  color: #5b6f72;
+}
+.seccion {
+  margin: 1.5rem 0 0;
+}
+.seccionTitulo {
+  font-size: 1.25rem;
+  margin: 0 0 0.5rem;
+}

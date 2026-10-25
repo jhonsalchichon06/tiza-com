@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 560" fill="none">
+<defs><clipPath id="c"><rect width="600" height="560" rx="40"/></clipPath></defs>
+<g clip-path="url(#c)">
+<rect width="600" height="560" fill="#e6f4ef"/>
+<circle cx="500" cy="90" r="140" fill="#fff1bd"/>
+<rect y="410" width="600" height="150" fill="#bfe3da"/>
+<rect y="404" width="600" height="8" fill="#a8d6cb"/>
+<rect x="50" y="70" width="210" height="250" rx="14" fill="#fff"/>
+<rect x="64" y="84" width="182" height="222" rx="8" fill="#bfe6f5"/>
+<rect x="152" y="84" width="6" height="222" fill="#fff"/><rect x="64" y="190" width="182" height="6" fill="#fff"/>
+<ellipse cx="110" cy="130" rx="30" ry="12" fill="#fff" opacity=".9"/><ellipse cx="128" cy="122" rx="20" ry="12" fill="#fff" opacity=".9"/>
+<rect x="330" y="90" width="110" height="80" rx="8" fill="#fff"/><rect x="340" y="100" width="90" height="60" rx="4" fill="#0b6e6e"/>
+<circle cx="365" cy="124" r="10" fill="#ffd23f"/><path d="M340 160l32-28 22 18 20-14 16 24z" fill="#084f50"/>
+<ellipse cx="300" cy="500" rx="250" ry="34" fill="#ffd23f" opacity=".55"/>
+<rect x="360" y="300" width="220" height="110" rx="28" fill="#0b6e6e"/>
+<rect x="350" y="340" width="50" height="86" rx="20" fill="#084f50"/>
+<rect x="540" y="340" width="50" height="86" rx="20" fill="#084f50"/>
+<rect x="395" y="352" width="150" height="62" rx="14" fill="#0e8383"/>
+<rect x="405" y="318" width="52" height="46" rx="12" fill="#ffd23f" transform="rotate(-8 430 340)"/>
+<rect x="468" y="324" width="52" height="46" rx="12" fill="#fff" transform="rotate(6 494 346)"/>
+<rect x="372" y="424" width="10" height="16" rx="3" fill="#0f2a2e"/><rect x="558" y="424" width="10" height="16" rx="3" fill="#0f2a2e"/>
+<path d="M40 438h60l-8 56H48z" fill="#e07a5f"/>
+<ellipse cx="55" cy="400" rx="14" ry="40" fill="#2f9e6f" transform="rotate(-25 55 400)"/>
+<ellipse cx="85" cy="396" rx="14" ry="42" fill="#3dbb85" transform="rotate(22 85 396)"/>
+<ellipse cx="70" cy="385" rx="13" ry="44" fill="#2f9e6f"/>
+<rect x="224" y="352" width="22" height="100" rx="10" fill="#0f2a2e"/><rect x="256" y="352" width="22" height="100" rx="10" fill="#0f2a2e"/>
+<rect x="216" y="446" width="36" height="16" rx="8" fill="#fff"/><rect x="250" y="446" width="36" height="16" rx="8" fill="#fff"/>
+<rect x="206" y="236" width="92" height="140" rx="30" fill="#0b6e6e"/>
+<path d="M222 270h60v100a8 8 0 0 1-8 8h-44a8 8 0 0 1-8-8z" fill="#ffd23f"/>
+<path d="M232 236l20 22 20-22" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="252" y="330" font-family="Georgia,serif" font-weight="700" font-size="22" fill="#0f2a2e" text-anchor="middle">tiza</text>
+<path d="M214 262c-20 24-28 52-30 80" stroke="#e8b48f" stroke-width="20" stroke-linecap="round"/>
+<path d="M290 258c24-4 44-20 54-44" stroke="#e8b48f" stroke-width="20" stroke-linecap="round"/>
+<rect x="336" y="170" width="34" height="62" rx="10" fill="#8ad0e8" transform="rotate(18 353 200)"/>
+<rect x="344" y="152" width="30" height="24" rx="6" fill="#0f2a2e" transform="rotate(18 359 164)"/>
+<path d="M368 160l36-8" stroke="#0f2a2e" stroke-width="7" stroke-linecap="round"/>
+<circle cx="184" cy="344" r="14" fill="#e8b48f"/><rect x="170" y="334" width="30" height="22" rx="8" fill="#fff"/>
+<circle cx="252" cy="196" r="34" fill="#e8b48f"/>
+<path d="M216 192c0-30 22-44 40-44 22 0 36 16 32 44-10-18-26-24-40-24-14 0-24 8-32 24z" fill="#2b1b17"/>
+<circle cx="288" cy="150" r="14" fill="#2b1b17"/>
+<circle cx="240" cy="198" r="3.5" fill="#0f2a2e"/><circle cx="264" cy="198" r="3.5" fill="#0f2a2e"/>
+<path d="M240 212q12 11 24 0" stroke="#0f2a2e" stroke-width="3.5" stroke-linecap="round"/>
+<path d="M430 140l7 18 18 7-18 7-7 18-7-18-18-7 18-7z" fill="#ffd23f"/>
+<path d="M470 210l5 12 12 5-12 5-5 12-5-12-12-5 12-5z" fill="#fff"/>
+<path d="M400 80l4 10 10 4-10 4-4 10-4-10-10-4 10-4z" fill="#fff"/>
+<path d="M520 180l4 9 9 4-9 4-4 9-4-9-9-4 9-4z" fill="#ffd23f"/>
+</g></svg>

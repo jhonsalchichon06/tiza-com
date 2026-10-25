@@ -1,0 +1,21 @@
+node_modules
+dist
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
+
+# Entorno y Next.js
+.env*
+!.env.example
+.next/
+next-env.d.ts
+
+.vercel
+tsconfig.tsbuildinfo
+
+# Config local de Claude Code
+.claude/settings.local.json

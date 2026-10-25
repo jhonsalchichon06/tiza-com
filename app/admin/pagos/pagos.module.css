@@ -1,0 +1,157 @@
+/* Estilos del portal de pagos. Solo clases (CSS Module): no cambian ninguna otra página. */
+
+.pagina {
+  max-width: 56rem;
+  margin: 2.5rem auto;
+  padding: 0 1rem;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  color: #0f2a2e;
+}
+.titulo {
+  font-size: 1.75rem;
+  margin: 0 0 0.5rem;
+}
+.ayuda {
+  color: #5b6f72;
+  margin: 0 0 1.5rem;
+}
+.volver {
+  display: inline-block;
+  margin-bottom: 1rem;
+  color: #0b6e6e;
+}
+.vacio {
+  padding: 1.5rem;
+  border: 1px dashed #e3e0d4;
+  border-radius: 12px;
+  text-align: center;
+  color: #5b6f72;
+}
+.lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+.fila {
+  display: grid;
+  gap: 0.25rem 1rem;
+  grid-template-columns: 1fr auto;
+  padding: 1rem;
+  border: 1px solid #e3e0d4;
+  border-radius: 12px;
+  background: #fff;
+  color: inherit;
+  text-decoration: none;
+}
+.fila:hover,
+.fila:focus-visible {
+  border-color: #0b6e6e;
+}
+.cliente {
+  font-weight: 600;
+}
+.monto {
+  font-weight: 700;
+  text-align: right;
+}
+.detalle {
+  color: #5b6f72;
+  font-size: 0.9375rem;
+}
+.tarjeta {
+  border: 1px solid #e3e0d4;
+  border-radius: 12px;
+  background: #fff;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+}
+.tarjeta h2 {
+  font-size: 1.125rem;
+  margin: 0 0 0.5rem;
+}
+.datos {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.25rem 1rem;
+  margin: 0;
+}
+.datos dt {
+  color: #5b6f72;
+}
+.datos dd {
+  margin: 0;
+}
+.comprobante {
+  display: block;
+  max-width: 100%;
+  max-height: 32rem;
+  border: 1px solid #e3e0d4;
+  border-radius: 8px;
+}
+.coincidencias {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+.nivel {
+  display: inline-block;
+  margin-right: 0.5rem;
+  padding: 0 0.5rem;
+  border-radius: 999px;
+  background: #ffd23f;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+.boton {
+  padding: 0.75rem 1.25rem;
+  border: 0;
+  border-radius: 999px;
+  background: #0b6e6e;
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.boton:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+.botonSecundario {
+  background: #fff;
+  color: #0b6e6e;
+  border: 2px solid #0b6e6e;
+}
+.botonPeligro {
+  background: #fff;
+  color: #a12c2c;
+  border: 2px solid #a12c2c;
+}
+.motivo {
+  display: block;
+  width: 100%;
+  max-width: 28rem;
+  padding: 0.5rem;
+  border: 1px solid #e3e0d4;
+  border-radius: 8px;
+  font: inherit;
+}
+.error {
+  margin: 0.75rem 0 0;
+  color: #a12c2c;
+}
+.exito {
+  margin: 0.75rem 0 0;
+  color: #0b6e6e;
+}

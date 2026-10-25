@@ -1,0 +1,308 @@
+/* Estilos del perfil del cliente, tomados de la referencia visual demo/cuenta.html (sin importar nada de demo/).
+   Solo clases (CSS Module). Público de 30 a 70 años: letra base de al menos 18 px y botones de al menos 48 px de alto. */
+
+.pagina {
+  --ink: #0f2a2e;
+  --muted: #5b6f72;
+  --bg: #fbfaf6;
+  --alt: #f1efe7;
+  --brand: #0b6e6e;
+  --brand-d: #084f50;
+  --chalk: #ffd23f;
+  --line: #e3e0d4;
+  --r: 18px;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 1.125rem; /* 18 px */
+  line-height: 1.55;
+  box-sizing: border-box;
+  padding: 1.5rem 1rem 4rem;
+}
+.pagina *,
+.pagina *::before,
+.pagina *::after {
+  box-sizing: border-box;
+}
+.contenido {
+  width: min(44rem, 100%);
+  margin: 0 auto;
+}
+
+.titulo {
+  font-family: Fraunces, Georgia, serif;
+  font-size: 2rem;
+  line-height: 1.15;
+  margin: 0 0 0.25rem;
+}
+.subtitulo {
+  color: var(--muted);
+  margin: 0 0 1.5rem;
+}
+.seccion {
+  margin: 2rem 0 0;
+}
+.seccionTitulo {
+  font-family: Fraunces, Georgia, serif;
+  font-size: 1.5rem;
+  margin: 0 0 0.75rem;
+}
+
+.tarjeta {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 1.1rem 1.25rem;
+  margin: 0 0 0.9rem;
+}
+.tarjetaTitulo {
+  font-weight: 700;
+  margin: 0 0 0.25rem;
+}
+.dato {
+  margin: 0.15rem 0;
+}
+.mutado {
+  color: var(--muted);
+}
+.vacio {
+  color: var(--muted);
+  margin: 0;
+}
+
+.etiqueta {
+  display: inline-block;
+  background: var(--alt);
+  border-radius: 999px;
+  padding: 0.15rem 0.8rem;
+  font-weight: 700;
+  font-size: 1rem;
+}
+.etiquetaEspera {
+  background: var(--chalk);
+}
+
+/* ----- avisos ----- */
+.aviso {
+  border-left: 6px solid var(--brand);
+  background: #fff;
+  border-radius: 0 var(--r) var(--r) 0;
+  padding: 1rem 1.25rem;
+  margin: 0 0 0.9rem;
+}
+.avisoAtencion {
+  border-left-color: #c0392b;
+}
+.avisoTexto {
+  margin: 0;
+  font-weight: 600;
+}
+.avisoMotivo {
+  margin: 0.4rem 0 0;
+  color: var(--muted);
+}
+
+/* ----- botones y enlaces ----- */
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem; /* 48 px */
+  padding: 0.6rem 1.4rem;
+  font: inherit;
+  font-weight: 700;
+  border: 2px solid var(--brand);
+  border-radius: 999px;
+  background: var(--brand);
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+}
+.boton:hover:not(:disabled) {
+  background: var(--brand-d);
+}
+.boton:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+.botonSecundario {
+  background: transparent;
+  color: var(--brand);
+}
+.botonPeligro {
+  background: #c0392b;
+  border-color: #c0392b;
+}
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1rem 0 0;
+}
+.enlace {
+  color: var(--brand);
+  font-weight: 700;
+}
+
+/* ----- formularios dentro del perfil ----- */
+.grupo {
+  border: 0;
+  padding: 0;
+  margin: 1rem 0 0;
+}
+.grupoTitulo {
+  font-weight: 700;
+  padding: 0;
+  margin: 0 0 0.5rem;
+}
+.opcion {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-height: 3rem;
+  padding: 0.5rem 0.9rem;
+  border: 2px solid var(--line);
+  border-radius: var(--r);
+  margin: 0 0 0.5rem;
+  background: #fff;
+  cursor: pointer;
+}
+.opcion input {
+  width: 1.4rem;
+  height: 1.4rem;
+}
+.datosPago {
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 2px dashed var(--line);
+  border-radius: var(--r);
+  background: #fff;
+}
+.qr {
+  display: block;
+  width: min(16rem, 100%);
+  height: auto;
+  margin: 0.5rem auto;
+}
+.cci {
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  word-break: break-all;
+}
+.archivo {
+  display: grid;
+  gap: 0.4rem;
+  font-weight: 700;
+  margin: 1rem 0 0;
+}
+.archivo input {
+  font: inherit;
+  font-weight: 400;
+  min-height: 3rem;
+}
+.campo {
+  display: grid;
+  gap: 0.4rem;
+  font-weight: 700;
+  margin: 1rem 0 0;
+}
+.campo input {
+  font: inherit;
+  font-weight: 400;
+  min-height: 3rem;
+  padding: 0.5rem 0.8rem;
+  border: 2px solid var(--line);
+  border-radius: 0.75rem;
+}
+.error {
+  margin: 0.75rem 0 0;
+  padding: 0.75rem 0.9rem;
+  border-radius: 0.75rem;
+  background: #fdecea;
+  color: #8a1c13;
+  font-weight: 600;
+}
+.exito {
+  margin: 0.75rem 0 0;
+  padding: 0.75rem 0.9rem;
+  border-radius: 0.75rem;
+  background: #e6f4ea;
+  color: #1e6b34;
+  font-weight: 600;
+}
+.avisoDemo {
+  margin: 0 0 0.75rem;
+  padding: 0.75rem 0.9rem;
+  border-radius: 0.75rem;
+  background: #fff6d6;
+  font-weight: 600;
+}
+
+/* ----- horarios para reprogramar ----- */
+.horarios {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr));
+  gap: 0.5rem;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.horario {
+  min-height: 3rem;
+  width: 100%;
+  font: inherit;
+  font-weight: 700;
+  border: 2px solid var(--brand);
+  border-radius: 0.75rem;
+  background: #fff;
+  color: var(--brand);
+  cursor: pointer;
+}
+.horario[aria-pressed="true"] {
+  background: var(--brand);
+  color: #fff;
+}
+.horario:disabled {
+  /* sin cupo o a menos de 48 horas: en gris y deshabilitado */
+  background: #e7e7e7;
+  border-color: #cfcfcf;
+  color: #8a8a8a;
+  cursor: not-allowed;
+}
+
+.volver {
+  display: inline-block;
+  margin: 0 0 1rem;
+}
+
+/* Fotos del servicio en el detalle de una reserva (ítem 17) */
+.fotos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+  gap: 0.5rem;
+  margin: 0 0 1rem;
+}
+.foto {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  background: #eceeea;
+}
+.cantidadFotos {
+  margin: 0;
+}
+
+/* Detalle del credito en horas (item 14): lista de movimientos con filas de al menos 48 px */
+.movimientos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.movimiento {
+  min-height: 3rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--line);
+}

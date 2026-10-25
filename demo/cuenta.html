@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="es-PE">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mi cuenta · Tiza.com</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script>try{if(sessionStorage.getItem('tz-pt')){document.documentElement.classList.add('tz-enter')}}catch(e){}</script>
+</head>
+<body>
+
+<div class="pt" aria-hidden="true"><span class="logo logo--light"><span class="logo__mark">✦</span>tiza<span class="logo__dot">.com</span></span></div>
+
+<header class="nav">
+  <div class="wrap nav__in">
+    <a href="index.html" class="logo" aria-label="Tiza.com"><span class="logo__mark">✦</span>tiza<span class="logo__dot">.com</span></a>
+    <div class="nav__auth">
+      <span class="muted" id="hola-nav"></span>
+      <span class="avatar" id="avatar" aria-hidden="true"></span>
+      <button class="link" type="button" id="logout">Salir</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap acct">
+  <div class="acct__top">
+    <div>
+      <p class="muted">Mi cuenta</p>
+      <h1 id="hola">Hola. Tu casa está al día.</h1>
+    </div>
+    <a href="reservar.html" class="btn btn--lg btn--auto">Reservar un servicio →</a>
+  </div>
+
+  <div class="acct__grid">
+    <section class="plan">
+      <div class="plan__top"><span class="pill pill--y">✦ Tiza Club</span><span>● Plan activo</span></div>
+      <div class="plan__price">S/ 89<span> /mes</span></div>
+      <p>Vigente hasta: 02 nov 2026 · La renovación no es automática</p>
+      <dl class="plan__meta">
+        <div><dt>Miembro desde</dt><dd>15 mar 2026</dd></div>
+        <div><dt>3 horas gratis</dt><dd>Usadas ✔</dd></div>
+        <div><dt>Crédito en horas</dt><dd>2 h · vence 15 ene 2027</dd></div>
+      </dl>
+      <div class="plan__act"><a href="index.html#club" class="btn btn--sm btn--light">Renovar membresía</a></div>
+    </section>
+
+    <section class="card month">
+      <div class="month__h"><h2>Este mes</h2><span class="muted">Octubre 2026</span></div>
+      <div>
+        <div class="month__row"><span>Horas usadas</span><b>2 de 8 h</b></div>
+        <div class="meter" role="progressbar" aria-valuenow="2" aria-valuemin="0" aria-valuemax="8"><i style="width:25%"></i></div>
+      </div>
+      <div class="kpis">
+        <div class="kpi"><strong>1</strong><span>Servicios hechos</span></div>
+        <div class="kpi"><strong>1</strong><span>Programado</span></div>
+        <div class="kpi"><strong>4,9★</strong><span>Tu valoración</span></div>
+      </div>
+    </section>
+  </div>
+
+  <section>
+    <h2 class="acct__t">Próximo servicio</h2>
+    <article class="card next">
+      <div class="datebox"><small>NOV</small><b>05</b></div>
+      <div class="next__b">
+        <h3>Limpieza general · 4 horas</h3>
+        <p class="muted">Miércoles, 9:00 a. m. · Av. Larco 1150, Miraflores</p>
+        <p class="muted">Profesional asignada: Rosa M.</p>
+      </div>
+      <div class="next__act"><a href="reservar.html" class="btn btn--sm btn--ghost">Reprogramar</a><a href="#" class="btn btn--sm btn--ghost">Cancelar</a></div>
+    </article>
+  </section>
+
+  <section>
+    <h2 class="acct__t">Historial de servicios</h2>
+    <div class="card" id="historial"></div>
+  </section>
+
+  <section class="invite">
+    <div><h3>🎁 Invita a una amiga</h3><p>Las dos reciben S/ 30 de descuento en su próxima limpieza.</p></div>
+    <a class="btn btn--sm" href="https://wa.me/?text=Prueba%20Tiza.com%20y%20recibe%20S%2F%2030%20de%20descuento">Compartir por WhatsApp</a>
+  </section>
+</main>
+
+<script src="transition.js"></script>
+<script src="auth.js"></script>
+<script src="cuenta.js"></script>
+</body>
+</html>

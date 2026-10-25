@@ -1,0 +1,80 @@
+sequenceDiagram
+    autonumber
+    actor C as Cliente
+    participant UI as Asistente /reservar
+    participant API as API /api/reservas
+    participant AG as Agenda (calcularDisponibilidad)
+    participant SRV as crear.ts / miembro.ts
+    participant DB as Neon (Postgres)
+    participant BL as Almacén privado (comprobante)
+
+    Note over C,UI: Pasos: servicio → día y hora → dirección → pago
+
+    C->>UI: Elige servicio (tamaño u horas)
+    UI->>API: GET cotización (tipo, dormitorios, baños u horas, dirección)
+    API->>DB: Lee configuración, membresía activa, crédito, hogar con gratis
+    API-->>UI: Cotización (monto, horas gratis, modo miembro o nuevo)
+
+    C->>UI: Elige día
+    UI->>API: GET disponibilidad (servicio, fecha)
+    API->>DB: Lee equipos activos y ocupación
+    API->>AG: calcularDisponibilidad (horasAgenda, equipos, ocupadas)
+    Note right of AG: Rango = servicio + 1 h de traslado.<br/>Lun a sáb 8:00 a 18:00, anticipación mínima
+    AG-->>UI: Horarios (disponible o motivo: anticipacion / sin_cupo)
+
+    C->>UI: Elige hora y escribe dirección (9 distritos)
+    alt Monto a pagar > 0
+        C->>UI: Elige Yape (QR) o transferencia (CCI), sube comprobante
+        UI->>BL: Sube imagen
+        BL-->>UI: Ruta del comprobante
+    else Monto 0 (gratis o crédito lo cubre)
+        Note over UI: No pide método ni comprobante
+    end
+
+    UI->>API: POST /api/reservas (servicio, inicio, dirección, metodo?, comprobante?)
+    Note over UI,API: Sin montos: el servidor los calcula (ADR 0008)
+    API->>API: requerirSesion + exigirJson
+
+    API->>DB: ¿Tiene alguna membresía activa (vigente o vencida)?
+    alt Cliente nuevo → crearPrimeraReserva
+        API->>SRV: crearPrimeraReserva
+        SRV->>SRV: Valida cuerpo (Zod), dirección, horario, vigencia
+        SRV->>BL: verificarImagen (el comprobante es del usuario)
+        SRV->>DB: BEGIN transacción
+        SRV->>DB: Cierra membresías sin reenvío, comprueba estado del cliente
+        SRV->>DB: decidirLimpiezaGratis (cliente y hogar)
+        SRV->>DB: INSERT membresía pendiente (S/ 267)
+        SRV->>DB: INSERT pago pendiente (membresía + reserva)
+        SRV->>DB: INSERT reserva pendiente + expira_en
+        Note right of DB: insertarEnPrimerEquipoLibre: un SAVEPOINT por equipo,<br/>restricción de exclusión 23P01 prueba el siguiente
+        alt Ningún equipo libre
+            DB-->>SRV: Conflicto en todos los equipos
+            SRV-->>API: 409 "Esa hora ya no está disponible"
+            API-->>UI: Error, elegir otra hora
+        else Equipo asignado
+            SRV->>DB: COMMIT
+        end
+    else Miembro con membresía activa → crearReservaDeMiembro
+        API->>SRV: crearReservaDeMiembro
+        SRV->>SRV: Valida cuerpo, dirección, horario
+        SRV->>DB: BEGIN transacción
+        SRV->>DB: ¿Ya hay reserva en espera? → 409 en_espera
+        SRV->>DB: ¿Pago aprobado esperando horario? → 409 horario_pendiente
+        SRV->>DB: Lee membresía que autoriza, valida vigencia contra su fin
+        SRV->>DB: Horas gratis + crédito (FOR UPDATE) → monto
+        alt monto > 0
+            SRV->>DB: INSERT pago pendiente (concepto reserva)
+            SRV->>DB: INSERT reserva pendiente + expira_en
+        else monto = 0
+            SRV->>DB: INSERT pago interno aprobado
+            SRV->>DB: INSERT reserva confirmada (sin plazo)
+        end
+        SRV->>DB: COMMIT
+    end
+
+    SRV->>SRV: mensajeDeReserva + enlaceWhatsapp (solo enlace prellenado)
+    SRV-->>API: reserva, membresía (null si es miembro), pago, whatsapp
+    API-->>UI: 201 RespuestaDeReserva
+    UI-->>C: Reserva enviada + aviso "pagos simulados" + botón de WhatsApp
+
+    Note over C,DB: Después: el admin aprueba o rechaza el pago.<br/>Al aprobar, la reserva pasa a confirmada y la membresía a activa (3 meses desde la aprobación).<br/>Si vence expira_en sin aprobación, la reserva expira.

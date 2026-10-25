@@ -2,7 +2,7 @@
 
 ## Estado
 
-Aceptado
+Aceptado. La expiración de reservas se reemplaza por la del ADR 0009 y la falla al subir imágenes se ajusta en el ADR 0010.
 
 ## Contexto
 
@@ -21,7 +21,7 @@ El PRD indica que la reserva gratis queda en espera hasta que el administrador a
 - Conflicto de reserva: respuesta `409` con un mensaje de que esa hora ya fue tomada y que elija otra.
 - Neon dormido tras inactividad: un solo reintento automático y, si falla, el mensaje "inténtalo en unos segundos".
 - Falla de Resend: se registra el error y al cliente se le indica que revise su correo o lo intente de nuevo. Nunca se revela si un correo está registrado.
-- Falla al subir una imagen: la operación se cancela completa, sin dejar un pago sin comprobante.
+- Falla al subir una imagen: no se crea el pago ni la reserva; un archivo que quedó sin usar se borra en la limpieza diaria (ADR 0010).
 - Errores inesperados: se registran en los logs de Vercel y se muestra un mensaje genérico, sin detalles técnicos.
 - Sin colas, sin reintentos complejos y sin monitoreo externo en v1.
 

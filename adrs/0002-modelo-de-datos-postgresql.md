@@ -2,7 +2,7 @@
 
 ## Estado
 
-Aceptado
+Aceptado. La capacidad se ajusta en el ADR 0007; los precios, la limpieza gratis por hogar, los pagos por reserva y el vínculo entre reserva, membresía y pago en el ADR 0008; la espera de las reservas en el ADR 0009; la dirección del hogar con campos de texto (distrito, dirección normalizada y departamento normalizado en `reservas`) en el ADR 0013, que reemplaza al 0011; las tablas de crédito en horas (`creditos_horas` y `usos_credito`) en el ADR 0012. El modelo vigente está en `TECH-DESIGN.md`.
 
 ## Contexto
 

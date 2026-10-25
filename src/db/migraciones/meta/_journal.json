@@ -1,0 +1,97 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1792465581168,
+      "tag": "0000_base",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1792467278871,
+      "tag": "0001_extension_y_datos_iniciales",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792471030111,
+      "tag": "0002_autenticacion",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1792563205922,
+      "tag": "0003_reservas",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1792636428279,
+      "tag": "0004_membresias-y-pagos",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1792644541217,
+      "tag": "0005_una-gratis-por-cliente-y-hogar",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1792646023104,
+      "tag": "0006_revision-de-pagos",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1792714692660,
+      "tag": "0007_cancelacion-minima-horas",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1792719435501,
+      "tag": "0008_renovacion-aviso-dias",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1792719800690,
+      "tag": "0009_reprogramada-por-admin",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1792725960489,
+      "tag": "0010_resenas",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1792726033219,
+      "tag": "0011_fotos-servicio",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1792727275547,
+      "tag": "0012_credito-en-horas",
+      "breakpoints": true
+    }
+  ]
+}

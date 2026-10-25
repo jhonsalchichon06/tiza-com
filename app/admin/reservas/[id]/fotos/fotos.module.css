@@ -1,0 +1,183 @@
+/* Pantalla de fotos del servicio del administrador. Solo clases (CSS Module). Letra de 18 px o más y botones de 48 px o más. */
+
+.pagina {
+  max-width: 56rem;
+  margin: 2.5rem auto;
+  padding: 0 1rem;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 1.125rem;
+  line-height: 1.55;
+  color: #0f2a2e;
+}
+.volver {
+  display: inline-block;
+  margin-bottom: 1rem;
+  color: #0b6e6e;
+}
+.titulo {
+  font-size: 1.75rem;
+  margin: 0 0 0.5rem;
+}
+.resumen {
+  display: grid;
+  gap: 0.125rem;
+  margin: 0 0 1.5rem;
+  color: #5b6f72;
+}
+.seccion {
+  margin: 0 0 2rem;
+}
+.seccionTitulo {
+  font-size: 1.375rem;
+  margin: 0 0 0.75rem;
+}
+.aviso {
+  padding: 1rem 1.25rem;
+  border: 1px solid #ffd23f;
+  border-radius: 12px;
+  background: #fffbe8;
+}
+.vacio {
+  padding: 1.5rem;
+  border: 1px dashed #e3e0d4;
+  border-radius: 12px;
+  text-align: center;
+  color: #5b6f72;
+}
+.grupo {
+  margin: 0 0 1.25rem;
+}
+.grupoTitulo {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+}
+.galeria {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+  gap: 0.75rem;
+}
+.foto {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border: 1px solid #e3e0d4;
+  border-radius: 8px;
+  background: #eceeea;
+}
+.cupo {
+  color: #5b6f72;
+  margin: 0 0 0.75rem;
+}
+.formulario {
+  display: grid;
+  gap: 1rem;
+}
+.campoArchivos {
+  display: grid;
+  gap: 0.5rem;
+}
+.entradaArchivos {
+  padding: 0.75rem;
+  border: 2px dashed #0b6e6e;
+  border-radius: 12px;
+  font: inherit;
+  min-height: 3rem;
+}
+.elegidas {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+.elegida {
+  display: grid;
+  grid-template-columns: 6rem 1fr;
+  gap: 0.25rem 1rem;
+  align-items: start;
+  padding: 0.75rem;
+  border: 1px solid #e3e0d4;
+  border-radius: 12px;
+  background: #fff;
+}
+.elegidaFallida {
+  border-color: #a12c2c;
+  background: #fdf3f3;
+}
+.vistaPrevia {
+  width: 6rem;
+  height: 6rem;
+  object-fit: cover;
+  border-radius: 8px;
+  background: #eceeea;
+}
+.datosElegida {
+  display: grid;
+  gap: 0.5rem;
+}
+.nombre {
+  font-size: 0.9375rem;
+  color: #5b6f72;
+  overflow-wrap: anywhere;
+}
+.campo {
+  display: grid;
+  gap: 0.25rem;
+}
+.campo select {
+  min-height: 3rem;
+  padding: 0.5rem;
+  border: 1px solid #b9c4c4;
+  border-radius: 8px;
+  font: inherit;
+  background: #fff;
+}
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.boton {
+  min-height: 3rem;
+  padding: 0.5rem 1.25rem;
+  border: 0;
+  border-radius: 999px;
+  background: #0b6e6e;
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.boton:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+.botonSecundario {
+  background: #fff;
+  color: #0b6e6e;
+  border: 2px solid #0b6e6e;
+}
+.progreso {
+  color: #0b6e6e;
+  font-weight: 600;
+}
+.error {
+  margin: 0;
+  color: #a12c2c;
+}
+.exito {
+  margin: 0;
+  color: #0b6e6e;
+  font-weight: 600;
+}
+.nota {
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+  border-left: 3px solid #ffd23f;
+  background: #fffbe8;
+  font-size: 1rem;
+}

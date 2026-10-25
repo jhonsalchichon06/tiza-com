@@ -1,0 +1,1831 @@
+{
+  "id": "e8523f3c-7284-4ce7-ac4b-8d187a6dada6",
+  "prevId": "02e04a5e-f631-4b39-a437-2d70787d0f26",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.configuracion": {
+      "name": "configuracion",
+      "schema": "",
+      "columns": {
+        "clave": {
+          "name": "clave",
+          "type": "varchar(100)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "valor": {
+          "name": "valor",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "provisional": {
+          "name": "provisional",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "actualizado_en": {
+          "name": "actualizado_en",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.creditos_horas": {
+      "name": "creditos_horas",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "usuario_id": {
+          "name": "usuario_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "reserva_origen_id": {
+          "name": "reserva_origen_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "horas_iniciales": {
+          "name": "horas_iniciales",
+          "type": "numeric(4, 1)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "horas_disponibles": {
+          "name": "horas_disponibles",
+          "type": "numeric(4, 1)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "vence_en": {
+          "name": "vence_en",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "creado_en": {
+          "name": "creado_en",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "creditos_un_lote_por_cancelacion": {
+          "name": "creditos_un_lote_por_cancelacion",
+          "columns": [
+            {
+              "expression": "reserva_origen_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "creditos_horas_usuario_vence_idx": {
+          "name": "creditos_horas_usuario_vence_idx",
+          "columns": [
+            {
+              "expression": "usuario_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "vence_en",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "creditos_horas_usuario_id_usuarios_id_fk": {
+          "name": "creditos_horas_usuario_id_usuarios_id_fk",
+          "tableFrom": "creditos_horas",
+          "tableTo": "usuarios",
+          "columnsFrom": [
+            "usuario_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "creditos_horas_reserva_origen_id_reservas_id_fk": {
+          "name": "creditos_horas_reserva_origen_id_reservas_id_fk",
+          "tableFrom": "creditos_horas",
+          "tableTo": "reservas",
+          "columnsFrom": [
+            "reserva_origen_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "creditos_horas_iniciales_positivas": {
+          "name": "creditos_horas_iniciales_positivas",
+          "value": "\"creditos_horas\".\"horas_iniciales\" > 0"
+        },
+        "creditos_horas_disponibles_en_rango": {
+          "name": "creditos_horas_disponibles_en_rango",
+          "value": "\"creditos_horas\".\"horas_disponibles\" >= 0 AND \"creditos_horas\".\"horas_disponibles\" <= \"creditos_horas\".\"horas_iniciales\""
+        },
+        "creditos_horas_medias_horas": {
+          "name": "creditos_horas_medias_horas",
+          "value": "mod(\"creditos_horas\".\"horas_iniciales\" * 2, 1) = 0 AND mod(\"creditos_horas\".\"horas_disponibles\" * 2, 1) = 0"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.cuentas": {
+      "name": "cuentas",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "account_id": {
+          "name": "account_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "provider_id": {
+          "name": "provider_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "access_token": {
+          "name": "access_token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "refresh_token": {
+          "name": "refresh_token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "id_token": {
+          "name": "id_token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "access_token_expires_at": {
+          "name": "access_token_expires_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "refresh_token_expires_at": {
+          "name": "refresh_token_expires_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "scope": {
+          "name": "scope",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "password": {
+          "name": "password",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "cuentas_user_id_idx": {
+          "name": "cuentas_user_id_idx",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "cuentas_user_id_usuarios_id_fk": {
+          "name": "cuentas_user_id_usuarios_id_fk",
+          "tableFrom": "cuentas",
+          "tableTo": "usuarios",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.equipos": {
+      "name": "equipos",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "nombre": {
+          "name": "nombre",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "activo": {
+          "name": "activo",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "equipos_nombre_unique": {
+          "name": "equipos_nombre_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "nombre"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.fotos_servicio": {
+      "name": "fotos_servicio",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "reserva_id": {
+          "name": "reserva_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ambiente": {
+          "name": "ambiente",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ruta": {
+          "name": "ruta",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "subida_por": {
+          "name": "subida_por",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "creada_en": {
+          "name": "creada_en",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "fotos_servicio_reserva_idx": {
+          "name": "fotos_servicio_reserva_idx",
+          "columns": [
+            {
+              "expression": "reserva_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "creada_en",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "fotos_servicio_reserva_id_reservas_id_fk": {
+          "name": "fotos_servicio_reserva_id_reservas_id_fk",
+          "tableFrom": "fotos_servicio",
+          "tableTo": "reservas",
+          "columnsFrom": [
+            "reserva_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "fotos_servicio_subida_por_usuarios_id_fk": {
+          "name": "fotos_servicio_subida_por_usuarios_id_fk",
+          "tableFrom": "fotos_servicio",
+          "tableTo": "usuarios",
+          "columnsFrom": [
+            "subida_por"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "fotos_servicio_ruta_unique": {
+          "name": "fotos_servicio_ruta_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "ruta"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.membresias": {
+      "name": "membresias",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "usuario_id": {
+          "name": "usuario_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "monto": {
+          "name": "monto",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "estado": {
+          "name": "estado",
+          "type": "estado_membresia",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "inicio": {
+          "name": "inicio",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "fin": {
+          "name": "fin",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "creada_en": {
+          "name": "creada_en",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "membresias_una_pendiente_por_cliente": {
+          "name": "membresias_una_pendiente_por_cliente",
+          "columns": [
+            {
+              "expression": "usuario_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "where": "\"membresias\".\"estado\" = 'pendiente'",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "membresias_usuario_id_usuarios_id_fk": {
+          "name": "membresias_usuario_id_usuarios_id_fk",
+          "tableFrom": "membresias",
+          "tableTo": "usuarios",
+          "columnsFrom": [
+            "usuario_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "membresias_monto_positivo": {
+          "name": "membresias_monto_positivo",
+          "value": "\"membresias\".\"monto\" > 0"
+        },
+        "membresias_estado_y_fechas": {
+          "name": "membresias_estado_y_fechas",
+          "value": "(\"membresias\".\"estado\" = 'activa' AND \"membresias\".\"inicio\" IS NOT NULL AND \"membresias\".\"fin\" IS NOT NULL AND \"membresias\".\"fin\" > \"membresias\".\"inicio\") OR (\"membresias\".\"estado\" <> 'activa' AND \"membresias\".\"inicio\" IS NULL AND \"membresias\".\"fin\" IS NULL)"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.pagos": {
+      "name": "pagos",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "usuario_id": {
+          "name": "usuario_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "concepto": {
+          "name": "concepto",
+          "type": "concepto_pago",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "membresia_id": {
+          "name": "membresia_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "monto": {
+          "name": "monto",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "metodo": {
+          "name": "metodo",
+          "type": "metodo_pago",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "comprobante_ruta": {
+          "name": "comprobante_ruta",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "estado": {
+          "name": "estado",
+          "type": "estado_pago",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'pendiente'"
+        },
+        "revisado_por": {
+          "name": "revisado_por",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "revisado_en": {
+          "name": "revisado_en",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "motivo_rechazo": {
+          "name": "motivo_rechazo",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "reemplaza_a": {
+          "name": "reemplaza_a",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "creado_en": {
+          "name": "creado_en",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "pagos_un_reemplazo_por_pago": {
+          "name": "pagos_un_reemplazo_por_pago",
+          "columns": [
+            {
+              "expression": "reemplaza_a",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "where": "\"pagos\".\"reemplaza_a\" IS NOT NULL",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "pagos_pendientes_idx": {
+          "name": "pagos_pendientes_idx",
+          "columns": [
+            {
+              "expression": "creado_en",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "where": "\"pagos\".\"estado\" = 'pendiente'",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "pagos_usuario_id_usuarios_id_fk": {
+          "name": "pagos_usuario_id_usuarios_id_fk",
+          "tableFrom": "pagos",
+          "tableTo": "usuarios",
+          "columnsFrom": [
+            "usuario_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "pagos_membresia_id_membresias_id_fk": {
+          "name": "pagos_membresia_id_membresias_id_fk",
+          "tableFrom": "pagos",
+          "tableTo": "membresias",
+          "columnsFrom": [
+            "membresia_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "pagos_revisado_por_usuarios_id_fk": {
+          "name": "pagos_revisado_por_usuarios_id_fk",
+          "tableFrom": "pagos",
+          "tableTo": "usuarios",
+          "columnsFrom": [
+            "revisado_por"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "pagos_reemplaza_a_pagos_id_fk": {
+          "name": "pagos_reemplaza_a_pagos_id_fk",
+          "tableFrom": "pagos",
+          "tableTo": "pagos",
+          "columnsFrom": [
+            "reemplaza_a"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "pagos_monto_no_negativo": {
+          "name": "pagos_monto_no_negativo",
+          "value": "\"pagos\".\"monto\" >= 0"
+        },
+        "pagos_membresia_si_concepto": {
+          "name": "pagos_membresia_si_concepto",
+          "value": "\"pagos\".\"concepto\" = 'reserva' OR \"pagos\".\"membresia_id\" IS NOT NULL"
+        },
+        "pagos_comprobante_si_no_credito": {
+          "name": "pagos_comprobante_si_no_credito",
+          "value": "\"pagos\".\"metodo\" = 'credito' OR \"pagos\".\"comprobante_ruta\" IS NOT NULL"
+        },
+        "pagos_credito_sin_monto": {
+          "name": "pagos_credito_sin_monto",
+          "value": "\"pagos\".\"metodo\" <> 'credito' OR \"pagos\".\"monto\" = 0"
+        },
+        "pagos_motivo_rechazo_corto": {
+          "name": "pagos_motivo_rechazo_corto",
+          "value": "char_length(\"pagos\".\"motivo_rechazo\") <= 200"
+        },
+        "pagos_revision_coherente": {
+          "name": "pagos_revision_coherente",
+          "value": "(\"pagos\".\"estado\" = 'pendiente' AND \"pagos\".\"revisado_por\" IS NULL AND \"pagos\".\"revisado_en\" IS NULL) OR \"pagos\".\"estado\" = 'aprobado' OR (\"pagos\".\"estado\" = 'rechazado' AND \"pagos\".\"revisado_por\" IS NOT NULL AND \"pagos\".\"revisado_en\" IS NOT NULL)"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.resenas": {
+      "name": "resenas",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "reserva_id": {
+          "name": "reserva_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "estrellas": {
+          "name": "estrellas",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "comentario": {
+          "name": "comentario",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "estado": {
+          "name": "estado",
+          "type": "estado_resena",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'pendiente'"
+        },
+        "revisada_por": {
+          "name": "revisada_por",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "revisada_en": {
+          "name": "revisada_en",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "creada_en": {
+          "name": "creada_en",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "actualizada_en": {
+          "name": "actualizada_en",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "resenas_aprobadas_idx": {
+          "name": "resenas_aprobadas_idx",
+          "columns": [
+            {
+              "expression": "revisada_en",
+              "isExpression": false,
+              "asc": false,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "where": "\"resenas\".\"estado\" = 'aprobada'",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "resenas_pendientes_idx": {
+          "name": "resenas_pendientes_idx",
+          "columns": [
+            {
+              "expression": "creada_en",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "where": "\"resenas\".\"estado\" = 'pendiente'",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "resenas_reserva_id_reservas_id_fk": {
+          "name": "resenas_reserva_id_reservas_id_fk",
+          "tableFrom": "resenas",
+          "tableTo": "reservas",
+          "columnsFrom": [
+            "reserva_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "resenas_revisada_por_usuarios_id_fk": {
+          "name": "resenas_revisada_por_usuarios_id_fk",
+          "tableFrom": "resenas",
+          "tableTo": "usuarios",
+          "columnsFrom": [
+            "revisada_por"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "resenas_reserva_id_unique": {
+          "name": "resenas_reserva_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "reserva_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "resenas_estrellas_entre_1_y_5": {
+          "name": "resenas_estrellas_entre_1_y_5",
+          "value": "\"resenas\".\"estrellas\" BETWEEN 1 AND 5"
+        },
+        "resenas_revision_coherente": {
+          "name": "resenas_revision_coherente",
+          "value": "(\"resenas\".\"estado\" = 'pendiente' AND \"resenas\".\"revisada_por\" IS NULL AND \"resenas\".\"revisada_en\" IS NULL) OR (\"resenas\".\"estado\" <> 'pendiente' AND \"resenas\".\"revisada_por\" IS NOT NULL AND \"resenas\".\"revisada_en\" IS NOT NULL)"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.reservas": {
+      "name": "reservas",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "usuario_id": {
+          "name": "usuario_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "equipo_id": {
+          "name": "equipo_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "membresia_id": {
+          "name": "membresia_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "pago_id": {
+          "name": "pago_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "tipo": {
+          "name": "tipo",
+          "type": "tipo_servicio",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "dormitorios": {
+          "name": "dormitorios",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "banos": {
+          "name": "banos",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "horas_trabajo": {
+          "name": "horas_trabajo",
+          "type": "numeric(4, 1)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "horas_agenda": {
+          "name": "horas_agenda",
+          "type": "numeric(4, 1)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "requiere_apoyo": {
+          "name": "requiere_apoyo",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "apoyo_estado": {
+          "name": "apoyo_estado",
+          "type": "estado_apoyo",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "apoyo_nota": {
+          "name": "apoyo_nota",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "distrito": {
+          "name": "distrito",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "calle": {
+          "name": "calle",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "numero": {
+          "name": "numero",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "departamento": {
+          "name": "departamento",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "departamento_normalizado": {
+          "name": "departamento_normalizado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "''"
+        },
+        "referencias": {
+          "name": "referencias",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "direccion_normalizada": {
+          "name": "direccion_normalizada",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "inicio": {
+          "name": "inicio",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "fin": {
+          "name": "fin",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "fin_bloqueo": {
+          "name": "fin_bloqueo",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "precio_lista": {
+          "name": "precio_lista",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "horas_gratis_aplicadas": {
+          "name": "horas_gratis_aplicadas",
+          "type": "numeric(4, 1)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'0'"
+        },
+        "credito_aplicado": {
+          "name": "credito_aplicado",
+          "type": "numeric(4, 1)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'0'"
+        },
+        "descuento": {
+          "name": "descuento",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "monto": {
+          "name": "monto",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "primera_gratis": {
+          "name": "primera_gratis",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "estado": {
+          "name": "estado",
+          "type": "estado_reserva",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cancelada_por": {
+          "name": "cancelada_por",
+          "type": "quien_cancela",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cancelada_en": {
+          "name": "cancelada_en",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "expira_en": {
+          "name": "expira_en",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "reprogramada_por": {
+          "name": "reprogramada_por",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "reprogramada_en": {
+          "name": "reprogramada_en",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "creada_en": {
+          "name": "creada_en",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "actualizada_en": {
+          "name": "actualizada_en",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "reservas_un_pago_por_reserva_viva": {
+          "name": "reservas_un_pago_por_reserva_viva",
+          "columns": [
+            {
+              "expression": "pago_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "where": "\"reservas\".\"estado\" IN ('pendiente', 'confirmada', 'completada')",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "reservas_una_pendiente_por_cliente": {
+          "name": "reservas_una_pendiente_por_cliente",
+          "columns": [
+            {
+              "expression": "usuario_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "where": "\"reservas\".\"estado\" = 'pendiente'",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "reservas_primera_gratis_por_cliente": {
+          "name": "reservas_primera_gratis_por_cliente",
+          "columns": [
+            {
+              "expression": "usuario_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "where": "\"reservas\".\"primera_gratis\" AND \"reservas\".\"estado\" IN ('pendiente', 'confirmada', 'completada')",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "reservas_primera_gratis_por_hogar": {
+          "name": "reservas_primera_gratis_por_hogar",
+          "columns": [
+            {
+              "expression": "distrito",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "direccion_normalizada",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "departamento_normalizado",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "where": "\"reservas\".\"primera_gratis\" AND \"reservas\".\"estado\" IN ('pendiente', 'confirmada', 'completada')",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "reservas_inicio_idx": {
+          "name": "reservas_inicio_idx",
+          "columns": [
+            {
+              "expression": "inicio",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "reservas_expira_en_pendiente_idx": {
+          "name": "reservas_expira_en_pendiente_idx",
+          "columns": [
+            {
+              "expression": "expira_en",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "where": "\"reservas\".\"estado\" = 'pendiente'",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "reservas_usuario_id_usuarios_id_fk": {
+          "name": "reservas_usuario_id_usuarios_id_fk",
+          "tableFrom": "reservas",
+          "tableTo": "usuarios",
+          "columnsFrom": [
+            "usuario_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "reservas_equipo_id_equipos_id_fk": {
+          "name": "reservas_equipo_id_equipos_id_fk",
+          "tableFrom": "reservas",
+          "tableTo": "equipos",
+          "columnsFrom": [
+            "equipo_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "reservas_membresia_id_membresias_id_fk": {
+          "name": "reservas_membresia_id_membresias_id_fk",
+          "tableFrom": "reservas",
+          "tableTo": "membresias",
+          "columnsFrom": [
+            "membresia_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "reservas_pago_id_pagos_id_fk": {
+          "name": "reservas_pago_id_pagos_id_fk",
+          "tableFrom": "reservas",
+          "tableTo": "pagos",
+          "columnsFrom": [
+            "pago_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "reservas_fin_posterior_al_inicio": {
+          "name": "reservas_fin_posterior_al_inicio",
+          "value": "\"reservas\".\"fin\" > \"reservas\".\"inicio\""
+        },
+        "reservas_bloqueo_no_antes_del_fin": {
+          "name": "reservas_bloqueo_no_antes_del_fin",
+          "value": "\"reservas\".\"fin_bloqueo\" >= \"reservas\".\"fin\""
+        },
+        "reservas_cancelada_por_coherente": {
+          "name": "reservas_cancelada_por_coherente",
+          "value": "\"reservas\".\"cancelada_por\" IS NULL OR \"reservas\".\"estado\" = 'cancelada'"
+        },
+        "reservas_cancelada_en_coherente": {
+          "name": "reservas_cancelada_en_coherente",
+          "value": "\"reservas\".\"cancelada_en\" IS NULL OR \"reservas\".\"estado\" = 'cancelada'"
+        },
+        "reservas_pendiente_con_vencimiento": {
+          "name": "reservas_pendiente_con_vencimiento",
+          "value": "\"reservas\".\"estado\" <> 'pendiente' OR \"reservas\".\"expira_en\" IS NOT NULL"
+        },
+        "reservas_tamano_o_paquete": {
+          "name": "reservas_tamano_o_paquete",
+          "value": "(\"reservas\".\"tipo\" = 'paquete' AND \"reservas\".\"dormitorios\" IS NULL AND \"reservas\".\"banos\" IS NULL) OR (\"reservas\".\"tipo\" <> 'paquete' AND \"reservas\".\"dormitorios\" IS NOT NULL AND \"reservas\".\"banos\" IS NOT NULL)"
+        },
+        "reservas_apoyo_coherente": {
+          "name": "reservas_apoyo_coherente",
+          "value": "(\"reservas\".\"requiere_apoyo\" AND \"reservas\".\"apoyo_estado\" IS NOT NULL) OR (NOT \"reservas\".\"requiere_apoyo\" AND \"reservas\".\"apoyo_estado\" IS NULL)"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.sesiones": {
+      "name": "sesiones",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "expires_at": {
+          "name": "expires_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "token": {
+          "name": "token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ip_address": {
+          "name": "ip_address",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "user_agent": {
+          "name": "user_agent",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "sesiones_user_id_idx": {
+          "name": "sesiones_user_id_idx",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "sesiones_user_id_usuarios_id_fk": {
+          "name": "sesiones_user_id_usuarios_id_fk",
+          "tableFrom": "sesiones",
+          "tableTo": "usuarios",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "sesiones_token_unique": {
+          "name": "sesiones_token_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "token"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.usos_credito": {
+      "name": "usos_credito",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "credito_id": {
+          "name": "credito_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "reserva_destino_id": {
+          "name": "reserva_destino_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "horas": {
+          "name": "horas",
+          "type": "numeric(4, 1)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "estado": {
+          "name": "estado",
+          "type": "estado_uso_credito",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "creado_en": {
+          "name": "creado_en",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "actualizado_en": {
+          "name": "actualizado_en",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "usos_credito_un_uso_por_lote_y_reserva": {
+          "name": "usos_credito_un_uso_por_lote_y_reserva",
+          "columns": [
+            {
+              "expression": "credito_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "reserva_destino_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "usos_credito_reserva_destino_idx": {
+          "name": "usos_credito_reserva_destino_idx",
+          "columns": [
+            {
+              "expression": "reserva_destino_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "usos_credito_credito_id_creditos_horas_id_fk": {
+          "name": "usos_credito_credito_id_creditos_horas_id_fk",
+          "tableFrom": "usos_credito",
+          "tableTo": "creditos_horas",
+          "columnsFrom": [
+            "credito_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "usos_credito_reserva_destino_id_reservas_id_fk": {
+          "name": "usos_credito_reserva_destino_id_reservas_id_fk",
+          "tableFrom": "usos_credito",
+          "tableTo": "reservas",
+          "columnsFrom": [
+            "reserva_destino_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "usos_credito_horas_positivas": {
+          "name": "usos_credito_horas_positivas",
+          "value": "\"usos_credito\".\"horas\" > 0 AND mod(\"usos_credito\".\"horas\" * 2, 1) = 0"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.usuarios": {
+      "name": "usuarios",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email_verified": {
+          "name": "email_verified",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "image": {
+          "name": "image",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "telefono": {
+          "name": "telefono",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "rol": {
+          "name": "rol",
+          "type": "rol_usuario",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'cliente'"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "usuarios_email_unique": {
+          "name": "usuarios_email_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "email"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.verificaciones": {
+      "name": "verificaciones",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "identifier": {
+          "name": "identifier",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "value": {
+          "name": "value",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "expires_at": {
+          "name": "expires_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "verificaciones_identifier_idx": {
+          "name": "verificaciones_identifier_idx",
+          "columns": [
+            {
+              "expression": "identifier",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {
+    "public.concepto_pago": {
+      "name": "concepto_pago",
+      "schema": "public",
+      "values": [
+        "membresia",
+        "reserva",
+        "membresia_y_reserva"
+      ]
+    },
+    "public.estado_apoyo": {
+      "name": "estado_apoyo",
+      "schema": "public",
+      "values": [
+        "por_coordinar",
+        "coordinado"
+      ]
+    },
+    "public.estado_membresia": {
+      "name": "estado_membresia",
+      "schema": "public",
+      "values": [
+        "pendiente",
+        "activa",
+        "caducada"
+      ]
+    },
+    "public.estado_pago": {
+      "name": "estado_pago",
+      "schema": "public",
+      "values": [
+        "pendiente",
+        "aprobado",
+        "rechazado"
+      ]
+    },
+    "public.estado_resena": {
+      "name": "estado_resena",
+      "schema": "public",
+      "values": [
+        "pendiente",
+        "aprobada",
+        "rechazada"
+      ]
+    },
+    "public.estado_reserva": {
+      "name": "estado_reserva",
+      "schema": "public",
+      "values": [
+        "pendiente",
+        "confirmada",
+        "completada",
+        "cancelada",
+        "expirada"
+      ]
+    },
+    "public.estado_uso_credito": {
+      "name": "estado_uso_credito",
+      "schema": "public",
+      "values": [
+        "reservado",
+        "consumido",
+        "devuelto"
+      ]
+    },
+    "public.metodo_pago": {
+      "name": "metodo_pago",
+      "schema": "public",
+      "values": [
+        "yape",
+        "transferencia",
+        "credito"
+      ]
+    },
+    "public.quien_cancela": {
+      "name": "quien_cancela",
+      "schema": "public",
+      "values": [
+        "cliente",
+        "admin"
+      ]
+    },
+    "public.rol_usuario": {
+      "name": "rol_usuario",
+      "schema": "public",
+      "values": [
+        "cliente",
+        "admin"
+      ]
+    },
+    "public.tipo_servicio": {
+      "name": "tipo_servicio",
+      "schema": "public",
+      "values": [
+        "estandar",
+        "profunda",
+        "mudanza",
+        "paquete"
+      ]
+    }
+  },
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

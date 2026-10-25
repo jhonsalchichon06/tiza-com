@@ -1,0 +1,114 @@
+/* Estilos de la cola de reseñas por revisar. Solo clases (CSS Module). Letra de 18 px o más y botones de 48 px o más. */
+
+.pagina {
+  max-width: 56rem;
+  margin: 2.5rem auto;
+  padding: 0 1rem;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 1.125rem;
+  line-height: 1.55;
+  color: #0f2a2e;
+}
+.titulo {
+  font-size: 1.75rem;
+  margin: 0 0 0.5rem;
+}
+.ayuda {
+  color: #5b6f72;
+  margin: 0 0 1.5rem;
+}
+.aviso {
+  margin: 0 0 1.5rem;
+  padding: 0.75rem 1rem;
+  border-left: 4px solid #ffd23f;
+  background: #fffbe8;
+}
+.volver {
+  display: inline-block;
+  margin-bottom: 1rem;
+  color: #0b6e6e;
+}
+.vacio {
+  padding: 1.5rem;
+  border: 1px dashed #e3e0d4;
+  border-radius: 12px;
+  text-align: center;
+  color: #5b6f72;
+}
+.lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+}
+.tarjeta {
+  border: 1px solid #e3e0d4;
+  border-radius: 12px;
+  background: #fff;
+  padding: 1rem 1.25rem;
+  display: grid;
+  gap: 0.5rem;
+}
+.cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+}
+.cliente {
+  font-weight: 600;
+}
+.estrellas {
+  color: #b7791f;
+  font-size: 1.375rem;
+  letter-spacing: 0.1em;
+}
+.detalle {
+  color: #5b6f72;
+  font-size: 1.0625rem;
+}
+.comentario {
+  margin: 0;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+.boton {
+  min-height: 3rem;
+  padding: 0 1.25rem;
+  border: 1px solid #0b6e6e;
+  border-radius: 10px;
+  background: #0b6e6e;
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.botonSecundario {
+  background: #fff;
+  color: #0b6e6e;
+}
+.botonPeligro {
+  border-color: #a12c2c;
+  background: #a12c2c;
+  color: #fff;
+}
+.boton:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+.pregunta {
+  font-weight: 600;
+}
+.error {
+  margin: 0;
+  color: #a12c2c;
+  font-weight: 600;
+}

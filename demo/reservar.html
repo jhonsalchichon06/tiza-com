@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="es-PE">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reserva tu limpieza · Tiza.com</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script>try{if(sessionStorage.getItem('tz-pt')){document.documentElement.classList.add('tz-enter')}}catch(e){}</script>
+</head>
+<body class="book">
+
+<div class="pt" aria-hidden="true"><span class="logo logo--light"><span class="logo__mark">✦</span>tiza<span class="logo__dot">.com</span></span></div>
+
+<header class="bk-top">
+  <div class="wrap bk-top__in">
+    <a href="index.html" class="logo" aria-label="Volver al inicio"><span class="logo__mark">✦</span>tiza<span class="logo__dot">.com</span></a>
+    <div class="bk-progress" aria-label="Progreso">
+      <div class="bk-progress__bar"><i id="bar"></i></div>
+      <span id="stepLabel">Paso 1 de 4</span>
+    </div>
+    <a href="index.html" class="bk-close" aria-label="Cerrar">✕</a>
+  </div>
+</header>
+
+<main class="wrap bk">
+  <section class="bk-main">
+    <div class="steps-stage" id="stage">
+
+      <!-- PASO 1 -->
+      <div class="panel" data-step="1">
+        <h1>¿Qué tipo de limpieza necesitas?</h1>
+        <p class="muted">Elige una opción. Puedes cambiarla después.</p>
+        <div class="opts" id="o-tipo">
+          <button type="button" class="opt" data-v="estandar"><img src="assets/svc-estandar.svg" alt=""><b>Limpieza estándar</b><small>Mantenimiento regular</small></button>
+          <button type="button" class="opt" data-v="profunda"><img src="assets/svc-profunda.svg" alt=""><b>Limpieza profunda</b><small>Sarro, grasa, zócalos</small></button>
+          <button type="button" class="opt" data-v="mudanza"><img src="assets/svc-mudanza.svg" alt=""><b>Mudanza</b><small>Entrega o llegada</small></button>
+          <button type="button" class="opt opt--time" data-v="horas"><span class="clock">⏱</span><b>Por horas</b><small>Tú decides cuánto tiempo</small></button>
+        </div>
+      </div>
+
+      <!-- PASO 2 -->
+      <div class="panel" data-step="2" hidden>
+        <h1>Cuéntanos sobre tu hogar</h1>
+        <p class="muted">Así calculamos tu precio exacto.</p>
+        <label class="fld">Distrito
+          <select id="distrito">
+            <option value="">Elige tu distrito…</option>
+            <option>Barranco</option><option>Jesús María</option><option>Lince</option>
+            <option>Miraflores</option><option>San Borja</option><option>San Isidro</option>
+            <option>San Luis</option><option>San Miguel</option><option>Santiago de Surco</option>
+          </select>
+        </label>
+
+        <div id="blk-tam">
+          <div class="row">
+            <div class="stepper"><span>Dormitorios</span><div><button type="button" data-t="dorm" data-d="-1">−</button><output id="dorm">2</output><button type="button" data-t="dorm" data-d="1">+</button></div></div>
+            <div class="stepper"><span>Baños</span><div><button type="button" data-t="banos" data-d="-1">−</button><output id="banos">1</output><button type="button" data-t="banos" data-d="1">+</button></div></div>
+          </div>
+        </div>
+
+        <div id="blk-horas" hidden>
+          <span class="lbl">¿Cuántas horas?</span>
+          <div class="hrs" id="o-horas">
+            <button type="button" data-v="3"><b>3 h</b><span>S/ 99</span></button>
+            <button type="button" data-v="4"><b>4 h</b><span>S/ 129</span></button>
+            <button type="button" data-v="6"><b>6 h</b><span>S/ 189</span><i>Mejor valor</i></button>
+            <button type="button" data-v="8"><b>8 h</b><span>S/ 239</span></button>
+          </div>
+        </div>
+        <p class="err" id="err2" hidden></p>
+      </div>
+
+      <!-- PASO 3 -->
+      <div class="panel" data-step="3" hidden>
+        <h1>¿Cuándo vamos?</h1>
+        <p class="muted">Elige día y hora. Reservamos con al menos 48 horas de anticipación.</p>
+
+        <span class="lbl">Día</span>
+        <div class="days" id="days"></div>
+
+        <span class="lbl">Hora de llegada</span>
+        <div class="times" id="times"></div>
+        <p class="fine">Los horarios en gris no están disponibles.</p>
+        <p class="err" id="err3" hidden></p>
+      </div>
+
+      <!-- PASO 4 -->
+      <div class="panel" data-step="4" hidden>
+        <h1>Tus datos</h1>
+        <p class="muted">Para enviar a nuestro equipo a la dirección correcta.</p>
+        <div class="row">
+          <label class="fld">Nombre<input id="nombre" type="text" placeholder="Tu nombre" autocomplete="name"></label>
+          <label class="fld">WhatsApp<input id="tel" type="tel" placeholder="9XX XXX XXX" inputmode="numeric" maxlength="9" autocomplete="tel"></label>
+        </div>
+        <label class="fld">Dirección<input id="dir" type="text" placeholder="Av. / Calle, número, depto." autocomplete="street-address"></label>
+        <label class="fld">Referencia o indicaciones (opcional)<input id="ref" type="text" placeholder="Ej.: portería con llave, mascota en casa"></label>
+
+        <div class="club-box on" id="clubBox">
+          <span class="club-box__i" aria-hidden="true">✦</span>
+          <span class="club-box__b">
+            <b>Tu reserva incluye la membresía Tiza Club · primeras 3 horas GRATIS</b>
+            <small>Para reservar necesitas la membresía: S/ 89/mes, 3 meses en un solo pago · 10% de descuento en las horas adicionales y en cada visita</small>
+          </span>
+        </div>
+        <p class="err" id="err4" hidden></p>
+      </div>
+
+      <!-- PASO 5 -->
+      <div class="panel" data-step="5" hidden>
+        <h1>Paga y sube tu comprobante</h1>
+        <p class="muted">Tu reserva queda en espera hasta que revisemos el pago (máximo 24 horas).</p>
+        <p class="demo-note"><b>DEMO:</b> los pagos son simulados. No envíes dinero real: el QR y la CCI son de demostración.</p>
+
+        <dl class="pay-sum" id="paySum"></dl>
+
+        <span class="lbl">¿Cómo vas a pagar?</span>
+        <div class="freq pay" id="o-pago">
+          <button type="button" data-v="yape"><b>Yape</b></button>
+          <button type="button" data-v="transferencia"><b>Transferencia</b></button>
+        </div>
+
+        <div class="pay-box" id="pay-yape" hidden>
+          <div class="qr" role="img" aria-label="Código QR de demostración"><span>QR de demostración</span></div>
+          <p>Escanea el código con Yape y paga el total. Luego toma una captura de la confirmación.</p>
+        </div>
+        <div class="pay-box" id="pay-transf" hidden>
+          <p><b>CCI de demostración:</b> 002-000-000000000000-00<br>Titular: Tiza.com (demo)</p>
+          <p>Transfiere el total y guarda el comprobante, que muestra el número de operación.</p>
+        </div>
+
+        <label class="fld">Comprobante (JPG, PNG o WebP, máximo 5 MB)<input id="comp" type="file" accept="image/jpeg,image/png,image/webp"></label>
+        <p class="err" id="err5" hidden></p>
+      </div>
+
+      <!-- ÉXITO -->
+      <div class="panel panel--ok" data-step="6" hidden>
+        <div class="check"><svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="24"/><path d="M14 27l8 8 16-17"/></svg></div>
+        <h1>¡Casi listo, <span id="okName"></span>!</h1>
+        <p class="muted">Recibimos tu comprobante. Tu reserva queda en espera hasta que revisemos el pago (máximo 24 horas). Si quieres coordinar algún detalle, escríbenos por WhatsApp.</p>
+        <a class="btn btn--lg" id="okWa" target="_blank" rel="noopener">Abrir WhatsApp</a>
+        <a class="link center" href="index.html">Volver al inicio</a>
+      </div>
+    </div>
+
+    <div class="bk-nav" id="nav">
+      <button type="button" class="btn btn--ghost" id="back">← Atrás</button>
+      <button type="button" class="btn" id="next">Continuar →</button>
+    </div>
+  </section>
+
+  <aside class="bk-side card" id="side">
+    <h2>Tu reserva</h2>
+    <dl id="sum"></dl>
+    <div class="sum-total">
+      <span id="totLabel">Precio por visita</span>
+      <strong id="tot">—</strong>
+    </div>
+    <p class="sum-note" id="sumNote"></p>
+    <ul class="mini">
+      <li>✔ Personal verificado</li>
+      <li>✔ Productos incluidos</li>    </ul>
+  </aside>
+</main>
+
+<script src="transition.js"></script>
+<script src="reservar.js"></script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+# No subir secretos ni artefactos locales al desplegar desde la CLI.
+.env*
+!.env.example
+node_modules
+.next
+demo
+test-results
+playwright-report
+tsconfig.tsbuildinfo

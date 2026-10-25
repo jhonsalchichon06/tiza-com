@@ -1,0 +1,75 @@
+# CI/CD de Tiza.com (DEPLOY-PLAN.md, opción B).
+# - ci: tipos, pruebas unitarias y build en cada PR y en cada push a main.
+# - desplegar: solo con disparo MANUAL (Actions > CI/CD > Run workflow) desde main, y solo si ci pasó.
+#   Usa el entorno "produccion" de GitHub: configúralo con revisores obligatorios para exigir aprobación.
+# Las migraciones de la base NO se ejecutan aquí: se aplican a mano antes de desplegar (npm run db:migrate).
+name: CI/CD
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-cd-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name != 'workflow_dispatch' }}
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Tipos
+        run: npm run typecheck
+      - name: Pruebas unitarias
+        run: npm test
+      - name: Build
+        run: npm run build
+
+  desplegar:
+    needs: ci
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: produccion
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Instalar la CLI de Vercel
+        run: npm install --global vercel@65.2.0
+      - name: Traer la configuración de producción
+        run: vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+      - name: Build
+        run: vercel build --prod --token="$VERCEL_TOKEN"
+      - name: Desplegar
+        run: vercel deploy --prebuilt --prod --meta gitCommit="${GITHUB_SHA::7}" --token="$VERCEL_TOKEN"
+      - name: Verificar /api/salud
+        run: |
+          for intento in 1 2 3 4 5 6; do
+            respuesta=$(curl -sS -w '\n%{http_code}' https://tiza-com.vercel.app/api/salud || true)
+            codigo=$(echo "$respuesta" | tail -n1)
+            cuerpo=$(echo "$respuesta" | head -n1)
+            echo "Intento $intento: $codigo $cuerpo"
+            if [ "$codigo" = "200" ] && echo "$cuerpo" | grep -q '"estado":"ok"'; then exit 0; fi
+            sleep 10
+          done
+          echo "::error::/api/salud no respondió ok. Considera el rollback: npx vercel rollback <url del despliegue anterior>"
+          exit 1

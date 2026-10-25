@@ -2,7 +2,7 @@
 
 ## Estado
 
-Aceptado
+Aceptado. El driver de Neon para transacciones se precisa en el ADR 0009 y la subida de imágenes en el ADR 0010.
 
 ## Contexto
 

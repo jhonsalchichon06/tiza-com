@@ -1,0 +1,5 @@
+/* Estilo mínimo y legible; el diseño del asistente llega con el ítem 9. */
+.campos { display: grid; gap: 1rem; }
+.campo { display: grid; gap: 0.35rem; font-weight: 600; }
+.campo input, .campo select { font: inherit; font-weight: 400; padding: 0.75rem 0.9rem; border: 2px solid #cfd8d5; border-radius: 0.6rem; background: #fff; }
+.campo input:focus, .campo select:focus { outline: none; border-color: #0b6e6e; box-shadow: 0 0 0 3px rgba(11, 110, 110, 0.2); }

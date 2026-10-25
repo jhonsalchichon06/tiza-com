@@ -2,7 +2,7 @@
 
 ## Estado
 
-Aceptado
+Aceptado. La subida de imágenes se ajusta en el ADR 0010.
 
 ## Contexto
 
@@ -16,7 +16,7 @@ El contrato entre el frontend y el servidor es una **API REST con JSON**, bajo e
 - Cada ruta valida los datos de entrada y comprueba la sesión y el rol antes de actuar. Un cliente solo accede a sus propios recursos; las rutas de administración exigen rol `admin`.
 - Códigos de estado estándar: `401` sin sesión, `403` sin permiso, `404` si el recurso no existe o no pertenece al usuario, `409` cuando una reserva choca con otra, `422` para datos inválidos.
 - Las respuestas de error usan un formato JSON único con un mensaje legible para mostrar al usuario.
-- Las imágenes (comprobantes y fotos del servicio) se suben con rutas dedicadas que validan tipo y tamaño de archivo.
+- Las imágenes (comprobantes y fotos del servicio) se suben directo a Blob con un token que emite `/api` y se registran después con una ruta que valida tipo, tamaño y dueño del archivo (ADR 0010).
 
 ## Alternativas consideradas
 

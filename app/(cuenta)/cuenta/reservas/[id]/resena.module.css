@@ -1,0 +1,52 @@
+/* Estilos solo del formulario de reseña (CSS Module). Letra de 18 px o más y botones de 48 px o más. */
+
+.estrellas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.estrella {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 3rem;
+  padding: 0.5rem 0.9rem;
+  border: 2px solid var(--line);
+  border-radius: var(--r);
+  background: #fff;
+  font-size: 1.125rem;
+  cursor: pointer;
+}
+.estrella input {
+  width: 1.4rem;
+  height: 1.4rem;
+}
+.comentario {
+  width: 100%;
+  min-height: 8rem;
+  padding: 0.7rem 0.9rem;
+  border: 2px solid var(--line);
+  border-radius: 0.75rem;
+  font: inherit;
+  font-size: 1.125rem;
+  font-weight: 400;
+  resize: vertical;
+}
+.contador {
+  font-weight: 400;
+  font-size: 1rem;
+  color: #5b6f72;
+}
+.estrellasLeidas {
+  color: #b7791f;
+  font-size: 1.5rem;
+  letter-spacing: 0.1em;
+}
+.texto {
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+.enviar {
+  min-height: 3rem;
+  font-size: 1.125rem;
+}

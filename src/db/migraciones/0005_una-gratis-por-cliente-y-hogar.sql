@@ -1,0 +1,2 @@
+CREATE UNIQUE INDEX "reservas_primera_gratis_por_cliente" ON "reservas" USING btree ("usuario_id") WHERE "reservas"."primera_gratis" AND "reservas"."estado" IN ('pendiente', 'confirmada', 'completada');--> statement-breakpoint
+CREATE UNIQUE INDEX "reservas_primera_gratis_por_hogar" ON "reservas" USING btree ("distrito","direccion_normalizada","departamento_normalizado") WHERE "reservas"."primera_gratis" AND "reservas"."estado" IN ('pendiente', 'confirmada', 'completada');
